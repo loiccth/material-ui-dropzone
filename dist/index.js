@@ -18,7 +18,7 @@ var PropTypes = _interopDefault(require('prop-types'));
 var React = require('react');
 var Snackbar = _interopDefault(require('@material-ui/core/Snackbar'));
 var Typography = _interopDefault(require('@material-ui/core/Typography'));
-var styles$3 = require('@material-ui/core/styles');
+var styles$2 = require('@material-ui/core/styles');
 var AttachFileIcon = _interopDefault(require('@material-ui/icons/AttachFile'));
 var CloudUploadIcon = _interopDefault(require('@material-ui/icons/CloudUpload'));
 var clsx = _interopDefault(require('clsx'));
@@ -27,13 +27,7 @@ var Chip = _interopDefault(require('@material-ui/core/Chip'));
 var Fab = _interopDefault(require('@material-ui/core/Fab'));
 var Grid = _interopDefault(require('@material-ui/core/Grid'));
 var DeleteIcon = _interopDefault(require('@material-ui/icons/Delete'));
-var IconButton = _interopDefault(require('@material-ui/core/IconButton'));
-var SnackbarContent = _interopDefault(require('@material-ui/core/SnackbarContent'));
-var CheckCircleIcon = _interopDefault(require('@material-ui/icons/CheckCircle'));
-var CloseIcon = _interopDefault(require('@material-ui/icons/Close'));
-var ErrorIcon = _interopDefault(require('@material-ui/icons/Error'));
-var InfoIcon = _interopDefault(require('@material-ui/icons/Info'));
-var WarningIcon = _interopDefault(require('@material-ui/icons/Warning'));
+var Alert = _interopDefault(require('@material-ui/lab/Alert'));
 var Button = _interopDefault(require('@material-ui/core/Button'));
 var Dialog = _interopDefault(require('@material-ui/core/Dialog'));
 var DialogActions = _interopDefault(require('@material-ui/core/DialogActions'));
@@ -230,45 +224,9 @@ process.env.NODE_ENV !== "production" ? PreviewList.propTypes = {
   showFileNames: PropTypes.bool,
   useChipsForPreview: PropTypes.bool
 } : void 0;
-var PreviewList$1 = styles$3.withStyles(styles, {
+var PreviewList$1 = styles$2.withStyles(styles, {
   name: 'MuiDropzonePreviewList'
 })(PreviewList);
-
-var variantIcon = {
-  success: CheckCircleIcon,
-  warning: WarningIcon,
-  error: ErrorIcon,
-  info: InfoIcon
-};
-
-var styles$1 = function styles(theme) {
-  return {
-    successAlert: {
-      backgroundColor: theme.palette.success.main
-    },
-    errorAlert: {
-      backgroundColor: theme.palette.error.main
-    },
-    infoAlert: {
-      backgroundColor: theme.palette.info.main
-    },
-    warningAlert: {
-      backgroundColor: theme.palette.warning.main
-    },
-    message: {
-      display: 'flex',
-      alignItems: 'center',
-      '& > svg': {
-        marginRight: theme.spacing(1)
-      }
-    },
-    icon: {
-      fontSize: 20,
-      opacity: 0.9
-    },
-    closeButton: {}
-  };
-};
 
 function SnackbarContentWrapper(props) {
   var classes = props.classes,
@@ -278,26 +236,13 @@ function SnackbarContentWrapper(props) {
       variant = props.variant,
       other = _objectWithoutProperties(props, ["classes", "className", "message", "onClose", "variant"]);
 
-  var Icon = variantIcon[variant];
-  return /*#__PURE__*/React.createElement(SnackbarContent, _extends({
-    className: clsx(classes["".concat(variant, "Alert")], className),
+  return /*#__PURE__*/React.createElement(Alert, _extends({
     "aria-describedby": "client-snackbar",
-    message: /*#__PURE__*/React.createElement("span", {
-      id: "client-snackbar",
-      className: classes.message
-    }, /*#__PURE__*/React.createElement(Icon, {
-      className: classes.icon
-    }), message),
-    action: [/*#__PURE__*/React.createElement(IconButton, {
-      key: "close",
-      "aria-label": "Close",
-      color: "inherit",
-      className: classes.closeButton,
-      onClick: onClose
-    }, /*#__PURE__*/React.createElement(CloseIcon, {
-      className: classes.icon
-    }))]
-  }, other));
+    elevation: 6,
+    onClose: onClose,
+    severity: variant,
+    variant: "standard"
+  }, other), message);
 }
 
 process.env.NODE_ENV !== "production" ? SnackbarContentWrapper.propTypes = {
@@ -307,15 +252,12 @@ process.env.NODE_ENV !== "production" ? SnackbarContentWrapper.propTypes = {
   onClose: PropTypes.func,
   variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired
 } : void 0;
-var SnackbarContentWrapper$1 = styles$3.withStyles(styles$1, {
-  name: 'MuiDropzoneSnackbar'
-})(SnackbarContentWrapper);
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
-var styles$2 = function styles(_ref) {
+var styles$1 = function styles(_ref) {
   var palette = _ref.palette,
       shape = _ref.shape,
       spacing = _ref.spacing;
@@ -668,7 +610,7 @@ var DropzoneAreaBase = /*#__PURE__*/function (_React$PureComponent) {
       }, alertSnackbarProps, {
         open: openSnackBar,
         onClose: this.handleCloseSnackbar
-      }), /*#__PURE__*/React.createElement(SnackbarContentWrapper$1, {
+      }), /*#__PURE__*/React.createElement(SnackbarContentWrapper, {
         onClose: this.handleCloseSnackbar,
         variant: snackbarVariant,
         message: snackbarMessage
@@ -924,7 +866,7 @@ process.env.NODE_ENV !== "production" ? DropzoneAreaBase.propTypes = {
    */
   onAlert: PropTypes.func
 } : void 0;
-var DropzoneAreaBase$1 = styles$3.withStyles(styles$2, {
+var DropzoneAreaBase$1 = styles$2.withStyles(styles$1, {
   name: 'MuiDropzoneArea'
 })(DropzoneAreaBase);
 

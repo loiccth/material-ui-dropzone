@@ -3,7 +3,7 @@
   "version": "3.5.0",
   "description": "A Material-UI file-upload dropzone",
   "license": "MIT",
-  "author": "Yuval",
+  "author": "LoicCth",
   "repository": {
     "type": "git",
     "url": "https://github.com/Yuvaleros/material-ui-dropzone.git"
@@ -47,6 +47,7 @@
   "peerDependencies": {
     "@material-ui/core": "^4.0.0",
     "@material-ui/icons": "^4.0.0",
+    "@material-ui/lab": "^4.0.0-alpha.57",
     "prop-types": "^15.7.2",
     "react": ">= 16.8",
     "react-dom": ">= 16.8"
