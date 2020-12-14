@@ -223,12 +223,10 @@ var PreviewList$1 = withStyles(styles, {
 })(PreviewList);
 
 function SnackbarContentWrapper(props) {
-  var classes = props.classes,
-      className = props.className,
-      message = props.message,
+  var message = props.message,
       onClose = props.onClose,
       variant = props.variant,
-      other = _objectWithoutProperties(props, ["classes", "className", "message", "onClose", "variant"]);
+      other = _objectWithoutProperties(props, ["message", "onClose", "variant"]);
 
   return /*#__PURE__*/createElement(Alert, _extends({
     "aria-describedby": "client-snackbar",
@@ -240,8 +238,6 @@ function SnackbarContentWrapper(props) {
 }
 
 process.env.NODE_ENV !== "production" ? SnackbarContentWrapper.propTypes = {
-  classes: PropTypes.object.isRequired,
-  className: PropTypes.string,
   message: PropTypes.node,
   onClose: PropTypes.func,
   variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired

@@ -2,7 +2,7 @@ import Alert from '@material-ui/lab/Alert'
 import PropTypes from 'prop-types';
 import * as React from 'react';
 function SnackbarContentWrapper(props) {
-    const { classes, className, message, onClose, variant, ...other } = props;
+    const { message, onClose, variant, ...other } = props;
 
     return (
         <Alert
@@ -19,8 +19,6 @@ function SnackbarContentWrapper(props) {
 }
 
 SnackbarContentWrapper.propTypes = {
-    classes: PropTypes.object.isRequired,
-    className: PropTypes.string,
     message: PropTypes.node,
     onClose: PropTypes.func,
     variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired,
