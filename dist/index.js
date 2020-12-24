@@ -27,7 +27,7 @@ var Chip = _interopDefault(require('@material-ui/core/Chip'));
 var Fab = _interopDefault(require('@material-ui/core/Fab'));
 var Grid = _interopDefault(require('@material-ui/core/Grid'));
 var DeleteIcon = _interopDefault(require('@material-ui/icons/Delete'));
-var Alert = _interopDefault(require('@material-ui/lab/Alert'));
+var Alert = _interopDefault(require('@material-ui/core/Alert'));
 var Button = _interopDefault(require('@material-ui/core/Button'));
 var Dialog = _interopDefault(require('@material-ui/core/Dialog'));
 var DialogActions = _interopDefault(require('@material-ui/core/DialogActions'));
@@ -228,27 +228,6 @@ var PreviewList$1 = styles$2.withStyles(styles, {
   name: 'MuiDropzonePreviewList'
 })(PreviewList);
 
-function SnackbarContentWrapper(props) {
-  var message = props.message,
-      onClose = props.onClose,
-      variant = props.variant,
-      other = _objectWithoutProperties(props, ["message", "onClose", "variant"]);
-
-  return /*#__PURE__*/React.createElement(Alert, _extends({
-    "aria-describedby": "client-snackbar",
-    elevation: 6,
-    onClose: onClose,
-    severity: variant,
-    variant: "standard"
-  }, other), message);
-}
-
-process.env.NODE_ENV !== "production" ? SnackbarContentWrapper.propTypes = {
-  message: PropTypes.node,
-  onClose: PropTypes.func,
-  variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired
-} : void 0;
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
@@ -347,7 +326,7 @@ var DropzoneAreaBase = /*#__PURE__*/function (_React$PureComponent) {
     _this.state = {
       openSnackBar: false,
       snackbarMessage: '',
-      snackbarVariant: 'success'
+      snackbarSeverity: 'success'
     };
 
     _this.handleDropAccepted = /*#__PURE__*/function () {
@@ -368,7 +347,7 @@ var DropzoneAreaBase = /*#__PURE__*/function (_React$PureComponent) {
                 _this.setState({
                   openSnackBar: true,
                   snackbarMessage: getFileLimitExceedMessage(filesLimit),
-                  snackbarVariant: 'error'
+                  snackbarSeverity: 'error'
                 }, _this.notifyAlert);
 
                 return _context2.abrupt("return");
@@ -427,7 +406,7 @@ var DropzoneAreaBase = /*#__PURE__*/function (_React$PureComponent) {
                 _this.setState({
                   openSnackBar: true,
                   snackbarMessage: message,
-                  snackbarVariant: 'success'
+                  snackbarSeverity: 'success'
                 }, _this.notifyAlert);
 
               case 11:
@@ -469,7 +448,7 @@ var DropzoneAreaBase = /*#__PURE__*/function (_React$PureComponent) {
       _this.setState({
         openSnackBar: true,
         snackbarMessage: message,
-        snackbarVariant: 'error'
+        snackbarSeverity: 'error'
       }, _this.notifyAlert);
     };
 
@@ -490,7 +469,7 @@ var DropzoneAreaBase = /*#__PURE__*/function (_React$PureComponent) {
         _this.setState({
           openSnackBar: true,
           snackbarMessage: getFileRemovedMessage(removedFileObj.file.name),
-          snackbarVariant: 'info'
+          snackbarSeverity: 'info'
         }, _this.notifyAlert);
       };
     };
@@ -511,10 +490,10 @@ var DropzoneAreaBase = /*#__PURE__*/function (_React$PureComponent) {
       var _this$state = this.state,
           openSnackBar = _this$state.openSnackBar,
           snackbarMessage = _this$state.snackbarMessage,
-          snackbarVariant = _this$state.snackbarVariant;
+          snackbarSeverity = _this$state.snackbarSeverity;
 
       if (openSnackBar && onAlert) {
-        onAlert(snackbarMessage, snackbarVariant);
+        onAlert(snackbarMessage, snackbarSeverity);
       }
     }
   }, {
@@ -550,7 +529,7 @@ var DropzoneAreaBase = /*#__PURE__*/function (_React$PureComponent) {
       var _this$state2 = this.state,
           openSnackBar = _this$state2.openSnackBar,
           snackbarMessage = _this$state2.snackbarMessage,
-          snackbarVariant = _this$state2.snackbarVariant;
+          snackbarSeverity = _this$state2.snackbarSeverity;
       var acceptFiles = acceptedFiles === null || acceptedFiles === void 0 ? void 0 : acceptedFiles.join(',');
       var isMultiple = filesLimit > 1;
       var previewsVisible = showPreviews && fileObjects.length > 0;
@@ -600,17 +579,18 @@ var DropzoneAreaBase = /*#__PURE__*/function (_React$PureComponent) {
         previewChipProps: previewChipProps,
         previewGridClasses: previewGridClasses,
         previewGridProps: previewGridProps
-      })), (typeof showAlerts === 'boolean' && showAlerts || Array.isArray(showAlerts) && showAlerts.includes(snackbarVariant)) && /*#__PURE__*/React.createElement(Snackbar, _extends({
+      })), (typeof showAlerts === 'boolean' && showAlerts || Array.isArray(showAlerts) && showAlerts.includes(snackbarSeverity)) && /*#__PURE__*/React.createElement(Snackbar, _extends({
         anchorOrigin: defaultSnackbarAnchorOrigin,
         autoHideDuration: 6000
       }, alertSnackbarProps, {
         open: openSnackBar,
         onClose: this.handleCloseSnackbar
-      }), /*#__PURE__*/React.createElement(SnackbarContentWrapper, {
+      }), /*#__PURE__*/React.createElement(Alert, {
+        elevation: 6,
+        severity: snackbarSeverity,
         onClose: this.handleCloseSnackbar,
-        variant: snackbarVariant,
-        message: snackbarMessage
-      })));
+        variant: "standard"
+      }, snackbarMessage)));
     }
   }]);
 

@@ -1,18 +1,18 @@
 import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import * as React from 'react';
-import {Fragment} from 'react';
+import { Fragment } from 'react';
 import Dropzone from 'react-dropzone';
-import {convertBytesToMbsOrKbs, isImage, readFile} from '../helpers';
+import { convertBytesToMbsOrKbs, isImage, readFile } from '../helpers';
 import PreviewList from './PreviewList';
-import SnackbarContentWrapper from './SnackbarContentWrapper';
+import Alert from '@material-ui/core/Alert'
 
-const styles = ({palette, shape, spacing}) => ({
+const styles = ({ palette, shape, spacing }) => ({
     '@keyframes progress': {
         '0%': {
             backgroundPosition: '0 0',
@@ -84,25 +84,25 @@ class DropzoneAreaBase extends React.PureComponent {
     state = {
         openSnackBar: false,
         snackbarMessage: '',
-        snackbarVariant: 'success',
+        snackbarSeverity: 'success',
     };
 
     notifyAlert() {
-        const {onAlert} = this.props;
-        const {openSnackBar, snackbarMessage, snackbarVariant} = this.state;
+        const { onAlert } = this.props;
+        const { openSnackBar, snackbarMessage, snackbarSeverity } = this.state;
         if (openSnackBar && onAlert) {
-            onAlert(snackbarMessage, snackbarVariant);
+            onAlert(snackbarMessage, snackbarSeverity);
         }
     }
 
-    handleDropAccepted = async(acceptedFiles, evt) => {
-        const {fileObjects, filesLimit, getFileAddedMessage, getFileLimitExceedMessage, onAdd, onDrop} = this.props;
+    handleDropAccepted = async (acceptedFiles, evt) => {
+        const { fileObjects, filesLimit, getFileAddedMessage, getFileLimitExceedMessage, onAdd, onDrop } = this.props;
 
         if (filesLimit > 1 && fileObjects.length + acceptedFiles.length > filesLimit) {
             this.setState({
                 openSnackBar: true,
                 snackbarMessage: getFileLimitExceedMessage(filesLimit),
-                snackbarVariant: 'error',
+                snackbarSeverity: 'error',
             }, this.notifyAlert);
             return;
         }
@@ -114,7 +114,7 @@ class DropzoneAreaBase extends React.PureComponent {
 
         // Retrieve fileObjects data
         const fileObjs = await Promise.all(
-            acceptedFiles.map(async(file) => {
+            acceptedFiles.map(async (file) => {
                 const data = await readFile(file);
                 return {
                     file,
@@ -133,7 +133,7 @@ class DropzoneAreaBase extends React.PureComponent {
         this.setState({
             openSnackBar: true,
             snackbarMessage: message,
-            snackbarVariant: 'success',
+            snackbarSeverity: 'success',
         }, this.notifyAlert);
     }
 
@@ -164,14 +164,14 @@ class DropzoneAreaBase extends React.PureComponent {
         this.setState({
             openSnackBar: true,
             snackbarMessage: message,
-            snackbarVariant: 'error',
+            snackbarSeverity: 'error',
         }, this.notifyAlert);
     }
 
     handleRemove = (fileIndex) => (event) => {
         event.stopPropagation();
 
-        const {fileObjects, getFileRemovedMessage, onDelete} = this.props;
+        const { fileObjects, getFileRemovedMessage, onDelete } = this.props;
 
         // Find removed fileObject
         const removedFileObj = fileObjects[fileIndex];
@@ -184,7 +184,7 @@ class DropzoneAreaBase extends React.PureComponent {
         this.setState({
             openSnackBar: true,
             snackbarMessage: getFileRemovedMessage(removedFileObj.file.name),
-            snackbarVariant: 'info',
+            snackbarSeverity: 'info',
         }, this.notifyAlert);
     };
 
@@ -221,7 +221,7 @@ class DropzoneAreaBase extends React.PureComponent {
             showPreviewsInDropzone,
             useChipsForPreview,
         } = this.props;
-        const {openSnackBar, snackbarMessage, snackbarVariant} = this.state;
+        const { openSnackBar, snackbarMessage, snackbarSeverity } = this.state;
 
         const acceptFiles = acceptedFiles?.join(',');
         const isMultiple = filesLimit > 1;
@@ -238,7 +238,7 @@ class DropzoneAreaBase extends React.PureComponent {
                     maxSize={maxFileSize}
                     multiple={isMultiple}
                 >
-                    {({getRootProps, getInputProps, isDragActive, isDragReject}) => (
+                    {({ getRootProps, getInputProps, isDragActive, isDragReject }) => (
                         <div
                             {...getRootProps({
                                 className: clsx(
@@ -262,8 +262,8 @@ class DropzoneAreaBase extends React.PureComponent {
                                 {Icon ? (
                                     <Icon className={classes.icon} />
                                 ) : (
-                                    <CloudUploadIcon className={classes.icon} />
-                                )}
+                                        <CloudUploadIcon className={classes.icon} />
+                                    )}
                             </div>
 
                             {previewsInDropzoneVisible &&
@@ -302,7 +302,7 @@ class DropzoneAreaBase extends React.PureComponent {
                 }
 
                 {((typeof showAlerts === 'boolean' && showAlerts) ||
-                    (Array.isArray(showAlerts) && showAlerts.includes(snackbarVariant))) &&
+                    (Array.isArray(showAlerts) && showAlerts.includes(snackbarSeverity))) &&
                     <Snackbar
                         anchorOrigin={defaultSnackbarAnchorOrigin}
                         autoHideDuration={6000}
@@ -310,11 +310,7 @@ class DropzoneAreaBase extends React.PureComponent {
                         open={openSnackBar}
                         onClose={this.handleCloseSnackbar}
                     >
-                        <SnackbarContentWrapper
-                            onClose={this.handleCloseSnackbar}
-                            variant={snackbarVariant}
-                            message={snackbarMessage}
-                        />
+                        <Alert elevation={6} severity={snackbarSeverity} onClose={this.handleCloseSnackbar} variant='standard'>{snackbarMessage}</Alert>
                     </Snackbar>
                 }
             </Fragment>
@@ -531,4 +527,4 @@ DropzoneAreaBase.propTypes = {
     onAlert: PropTypes.func,
 };
 
-export default withStyles(styles, {name: 'MuiDropzoneArea'})(DropzoneAreaBase);
+export default withStyles(styles, { name: 'MuiDropzoneArea' })(DropzoneAreaBase);

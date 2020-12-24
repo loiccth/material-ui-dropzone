@@ -1,4 +1,4 @@
-import Alert from '@material-ui/lab/Alert'
+import Alert from '@material-ui/core/Alert'
 import PropTypes from 'prop-types';
 import * as React from 'react';
 function SnackbarContentWrapper(props) {
